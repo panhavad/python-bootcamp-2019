@@ -1,0 +1,12 @@
+[Unit]
+Description=Kirirom Weather Station data pushing
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+User=root
+ExecStart=/bin/bash /etc/talend/kws/kws_run.sh
+
+[Install]
+WantedBy=multi-user.target

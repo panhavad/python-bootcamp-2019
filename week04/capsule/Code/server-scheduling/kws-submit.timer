@@ -1,0 +1,11 @@
+[Unit]
+Description=Kirirom Weather Station data pushing
+
+[Timer]
+OnBootSec=0min
+#Every 2 minutes
+OnCalendar=*:0/2
+Persistent=true
+ 
+[Install]
+WantedBy=timers.target

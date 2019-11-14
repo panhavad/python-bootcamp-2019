@@ -1,0 +1,2 @@
+This file will be implement to API server and handle by Gunicorn, Supervisor, Nginx
+Main file is: kws_api.py

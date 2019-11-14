@@ -1,0 +1,8 @@
+{
+	"DBHOST" : "localhost",
+	"DBPORT" : "5432",
+	"DBUSER" : "postgres",
+	"DBPASS" : "123!@#",
+	"DBNAME" : "kws_db"
+
+}
