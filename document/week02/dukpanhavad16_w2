@@ -1,0 +1,546 @@
+===== ===== ===== ===== ===== ===== ===== ===== =====
+		LOG: dukpanhavad16
+===== ===== ===== ===== ===== ===== ===== ===== =====
+['Hello!', 'It’s', 'me', 'again!']
+['Hello!', 'It’s', 'me', 'again!']
+===== ===== ===== ===== ===== ===== ===== ===== =====
+		OUTPUT: dukpanhavad16
+===== ===== ===== ===== ===== ===== ===== ===== =====
+==============
+EX 21 OUTPUT:
+8
+3 + 5 = 8
+==============
+TESTING:  [21_fun_calc.py]
+fun_calc(3,5)
+21 : OK
+
+==============
+EX 22 OUTPUT:
+['Hello!', 'its', 'me']
+==============
+TESTING:  [22_fun_split.py]
+fun_split("Hello! its me")
+22 : OK
+
+==============
+EX 22 OUTPUT:
+[]
+==============
+TESTING:  [22_fun_split.py]
+fun_split("")
+22 : OK
+
+==============
+EX 23 OUTPUT:
+('hello', 2)
+==============
+TESTING:  [23_fun_tuple.py]
+fun_tuple('hello', 2)
+23 : OK
+
+==============
+EX 24 OUTPUT:
+SOMETHING WRONG
+tuple_first() missing 1 required positional argument: 'param2'
+==============
+EX 25 OUTPUT:
+SOMETHING WRONG
+tuple_second() missing 1 required positional argument: 'param2'
+==============
+EX 26 OUTPUT:
+[456, 123]
+==============
+TESTING:  [26_list_set.py]
+list_set([456, 123, 123]
+26 : OK
+
+==============
+EX 27 OUTPUT:
+['a', 'c', 'z']
+==============
+TESTING:  [27_list_sort.py]
+list_sort(['a', 'z', 'c']
+27 : OK
+
+==============
+EX 27 OUTPUT:
+[]
+==============
+TESTING:  [27_list_sort.py]
+list_sort([])
+27 : OK
+
+==============
+EX 28 OUTPUT:
+[1, 2, 4]
+==============
+TESTING:  [28_list_sort_set.py]
+list_sort_set([4, 4, 4, 2, 1, 1, 2])
+28 : OK
+
+==============
+EX 28 OUTPUT:
+['a', 'b', 'f', 'z']
+==============
+TESTING:  [28_list_sort_set.py]
+list_sort_set(['a', 'b', 'b', 'z', 'f'])
+28 : OK
+
+==============
+EX 29 OUTPUT:
+['aab', 'abc', 'def']
+==============
+TESTING:  [29_list_sort_str.py]
+list_sort_str(["abc", "123", "def", "aab"])
+29 : OK
+
+==============
+EX 30 OUTPUT:
+[99, 100, 123]
+==============
+TESTING:  [30_list_sort_int.py]
+list_sort_int(["123", "100", "99", "aaa", "bbb"]
+30 : OK
+
+==============
+EX 31 OUTPUT:
+{'a': 3, 'b': 2, 'c': 2}
+==============
+TESTING:  [31_dict_count.py]
+dict_count(["a", "a", "a", "b", "b", "c", "c"])
+31 : OK
+
+==============
+EX 32 OUTPUT:
+[('a', 6), ('z', 4), ('b', 4)]
+TOTAL: 14
+==============
+TESTING:  [32_dict_count2.py]
+dict_count2(["z", "z", "z", "z", "b", "b", "b", "b", "a", "a", "a", "a", "a", "a"])
+32 : KO
+===== ===== ===== ===== =====
+expect:	 [('a', 6), ('b', 4), ('z', 4)]
+result:	 [('a', 6), ('z', 4), ('b', 4)]
+===== ===== ===== ===== =====
+SOURCE CODE: [32_dict_count2.py]
+"""
+
+	LOGIC:
+		We have this list [(‘a’, 6), (‘b’, 4), (‘z’, 4)]
+			want to sort this list base on value
+			recommend to use sorted() function because
+			it will handle most case that might lead to error/crash
+			PROBLEM: this sorted() can only sorted on key not value
+		SO:
+			- swape value in tuple in list
+				- tuple does not allow items aligment so
+					we have to converted tuple to list first
+					then swape
+			- using sorted() to sort the list base on new list of tuple
+			- swape back the tuple to normal form after sorted
+
+
+"""
+
+def dict_count2(list_values):
+
+	new_list_values = list()
+	total_occorrences = 0
+
+	if list_values != []:
+		set_values = sorted(set(list_values)) #short way to get the unique value in list
+
+		for set_element in set_values:
+			occurrence_counter = list_values.count(set_element)
+			total_occorrences += occurrence_counter
+			new_list_values.append((set_element, occurrence_counter))#add tuple to list
+
+		swaped_list_a_b = tuple_swaper(new_list_values, True)#swape element in tuple for best sorting without raise any error
+		swaped_list_b_a = tuple_swaper(swaped_list_a_b, False)#swape back to normal after sorted
+
+		print(f"{swaped_list_b_a}\n"
+				f"TOTAL: {total_occorrences}")
+
+		return swaped_list_b_a
+
+	else:
+		print(f"Your string is empty.\n"
+				f"TOTAL: {total_occorrences}")
+
+		return list_values
+
+
+#function to help make dict_count2 is more readable
+def tuple_swaper(list_values, a_to_b):
+
+	swaped_list = list()
+
+	for list_element in list_values:
+		#tuple does not allow item alignment so convert to list first
+		tuple_to_list = list(list_element)
+		#swaping element in list(tuple mainer)
+		tuple_to_list[0], tuple_to_list[1] = tuple_to_list[1], tuple_to_list[0]
+		swaped_list.append(tuple(tuple_to_list))
+
+	if a_to_b:
+		swaped_list = sorted(swaped_list, reverse = True)
+
+	return swaped_list
+
+#START HERE
+# dict_count2(["z", "z", "z", "z", "b", "b", "b", "b", "a", "a", "a", "a", "a", "a"])
+# dict_count2([])
+
+#CALLING
+# print(dict_count2(["z", "z", "z", "z", "b", "b", "b", "b", "a", "a", "a", "a", "a", "a"]))
+# print(dict_count2([]))
+
+===== ===== ===== ===== =====
+
+==============
+EX 33 OUTPUT:
+[('a', 1), ('b', 2), ('c', 4), ('d', 2), ('e', 3)]
+TOTAL: 12
+==============
+TESTING:  [33_dict_count3.py]
+dict_count3(["a", "b", "b", "c", "c", "c", "c", "d", "d", "e", "e", "e"])
+33 : KO
+===== ===== ===== ===== =====
+expect:	 [('a', 6), ('b', 4), ('z', 4)]
+result:	 [('a', 1), ('b', 2), ('c', 4), ('d', 2), ('e', 3)]
+===== ===== ===== ===== =====
+SOURCE CODE: [33_dict_count3.py]
+def dict_count3(list_values):
+	"""Sort the list of tuple that created by
+		the given list
+
+    Args:
+      a list of anything
+    Returns:
+      list of sorted tuple
+      total repeat time of all elemet in list of tuple
+    """
+
+	total_occorrences = 0
+
+	if list_values != []:
+		set_values = set(list_values)
+		sorted_list_values = list()
+
+		for set_element in set_values:
+			occorrence_counter = list_values.count(set_element)
+			sorted_list_values.append((set_element, occorrence_counter))
+			total_occorrences += occorrence_counter
+
+		sorted_list_values = sorted(sorted_list_values)
+		print(f"{sorted_list_values}\n"
+				f"TOTAL: {total_occorrences}")
+
+		return sorted_list_values
+
+	else:
+		print(f"Your string is empty.\n"
+				f"TOTAL: {total_occorrences}")
+
+		return list_values
+
+#START HERE
+# dict_count3(["a", "b", "b", "c", "c", "c", "c", "d", "d", "e", "e", "e"])
+# dict_count3([])
+
+#CALLING
+# print(dict_count3(["a", "b", "b", "c", "c", "c", "c", "d", "d", "e", "e", "e"]))
+# print(dict_count3([]))
+
+
+===== ===== ===== ===== =====
+
+==============
+EX 34 OUTPUT:
+2019-05-29
+==============
+TESTING:  [34_current_date.py]
+current_date()
+34 : OK
+
+==============
+EX 35 OUTPUT:
+20:52:21
+==============
+TESTING:  [35_current_time.py]
+time_current()
+35 : OK
+
+==============
+EX 36 OUTPUT:
+2019-05-29 20:52:21
+==============
+TESTING:  [36_date_time.py]
+date_time()
+36 : OK
+
+==============
+EX 37 OUTPUT:
+2018-12-25 09:27:53
+==============
+TESTING:  [37_timestamp_to_str.py]
+timestamp_to_str(1545730073)
+37 : KO
+===== ===== ===== ===== =====
+expect:	 2018-12-25 16:27:53
+result:	 2018-12-25 09:27:53
+===== ===== ===== ===== =====
+SOURCE CODE: [37_timestamp_to_str.py]
+"""
+
+	NB: In this program we handle invalid character in param but
+		we do not handle the epoch value as NEGATIVE because epoch value
+		can be NEGATIVE
+
+		proof by https://www.epochconverter.com/
+
+"""
+import time
+
+def timestamp_to_str(str_timestamp):
+	"""Converting epoch number to the actual date and time
+
+    Args:
+      string of epoch value
+    Returns:
+      actual date and time as string in format of YYYY-MM-DD HH:MM:SS
+    """
+	try:
+		str_timestamp = int(str_timestamp)
+		converted_datetime = time.strftime("%Y-%m-%d %H:%M:%S",
+			time.gmtime(str_timestamp))
+
+		print(converted_datetime)
+
+		return converted_datetime
+	except Exception as e:
+		print("Your timestamp is not valid.")
+
+		return 0
+
+#START HERE
+# timestamp_to_str(1623646780)
+# timestamp_to_str("sad")
+
+#CALLING
+# print(timestamp_to_str(1623646780))
+# print(timestamp_to_str("sad"))
+
+===== ===== ===== ===== =====
+
+==============
+EX 37 OUTPUT:
+2018-12-25 09:27:53
+==============
+TESTING:  [37_timestamp_to_str.py]
+timestamp_to_str("1545730073")
+37 : KO
+===== ===== ===== ===== =====
+expect:	 2018-12-25 16:27:53
+result:	 2018-12-25 09:27:53
+===== ===== ===== ===== =====
+SOURCE CODE: [37_timestamp_to_str.py]
+"""
+
+	NB: In this program we handle invalid character in param but
+		we do not handle the epoch value as NEGATIVE because epoch value
+		can be NEGATIVE
+
+		proof by https://www.epochconverter.com/
+
+"""
+import time
+
+def timestamp_to_str(str_timestamp):
+	"""Converting epoch number to the actual date and time
+
+    Args:
+      string of epoch value
+    Returns:
+      actual date and time as string in format of YYYY-MM-DD HH:MM:SS
+    """
+	try:
+		str_timestamp = int(str_timestamp)
+		converted_datetime = time.strftime("%Y-%m-%d %H:%M:%S",
+			time.gmtime(str_timestamp))
+
+		print(converted_datetime)
+
+		return converted_datetime
+	except Exception as e:
+		print("Your timestamp is not valid.")
+
+		return 0
+
+#START HERE
+# timestamp_to_str(1623646780)
+# timestamp_to_str("sad")
+
+#CALLING
+# print(timestamp_to_str(1623646780))
+# print(timestamp_to_str("sad"))
+
+===== ===== ===== ===== =====
+
+==============
+EX 37 OUTPUT:
+Your timestamp is not valid.
+==============
+TESTING:  [37_timestamp_to_str.py]
+timestamp_to_str("abcefg")
+37 : OK
+
+==============
+EX 37 OUTPUT:
+1969-12-31 23:59:59
+==============
+TESTING:  [37_timestamp_to_str.py]
+timestamp_to_str(-1)
+37 : KO
+===== ===== ===== ===== =====
+expect:	 0
+result:	 1969-12-31 23:59:59
+===== ===== ===== ===== =====
+SOURCE CODE: [37_timestamp_to_str.py]
+"""
+
+	NB: In this program we handle invalid character in param but
+		we do not handle the epoch value as NEGATIVE because epoch value
+		can be NEGATIVE
+
+		proof by https://www.epochconverter.com/
+
+"""
+import time
+
+def timestamp_to_str(str_timestamp):
+	"""Converting epoch number to the actual date and time
+
+    Args:
+      string of epoch value
+    Returns:
+      actual date and time as string in format of YYYY-MM-DD HH:MM:SS
+    """
+	try:
+		str_timestamp = int(str_timestamp)
+		converted_datetime = time.strftime("%Y-%m-%d %H:%M:%S",
+			time.gmtime(str_timestamp))
+
+		print(converted_datetime)
+
+		return converted_datetime
+	except Exception as e:
+		print("Your timestamp is not valid.")
+
+		return 0
+
+#START HERE
+# timestamp_to_str(1623646780)
+# timestamp_to_str("sad")
+
+#CALLING
+# print(timestamp_to_str(1623646780))
+# print(timestamp_to_str("sad"))
+
+===== ===== ===== ===== =====
+
+==============
+EX 38 OUTPUT:
+['20:52:21', '20:52:22', '20:52:23', '20:52:24', '20:52:25']
+==============
+TESTING:  [38_time_list.py]
+time_list(5)
+38 : OK
+
+==============
+EX 38 OUTPUT:
+[]
+Invalid integer.
+==============
+TESTING:  [38_time_list.py]
+time_list(-2)
+38 : OK
+
+==============
+EX 39 OUTPUT:
+['H', 'W', 'T', 'K']
+==============
+TESTING:  [39_acronym.py]
+acronym(["hello", "welcome", "to", "kirirom"])
+39 : OK
+
+==============
+EX 40 OUTPUT:
+[]
+==============
+TESTING:  [39_acronym.py]
+acronym([])
+39 : OK
+
+==============
+EX 40 OUTPUT:
+3
+aia
+WHTSSTHT?
+==============
+TESTING:  [40_vowels.py]
+vowels("whats is that?")
+40 : OK
+
+==============
+EX 40 OUTPUT:
+4
+aiaa
+WHTSSTHYT?
+==============
+TESTING:  [40_vowels.py]
+vowels("whats is thaayt?")
+40 : OK
+
+==============
+EX 40 OUTPUT:
+NO VOWELS
+==============
+TESTING:  [40_vowels.py]
+vowels("whts s tht?")
+40 : OK
+
+===== ===== ===== ===== ===== ===== ===== ===== =====
+		SCORE: dukpanhavad16
+===== ===== ===== ===== ===== ===== ===== ===== =====
+dukpanhavad16
+dukpanhavad16@kit.edu.kh
+
+EXERCISES:
+
+
+EX_21 : OK
+EX_22 : OK
+EX_23 : OK
+EX_24 : KO : Something wrong with filename/function name or parameters.
+EX_25 : KO : Something wrong with filename/function name or parameters.
+EX_26 : OK
+EX_27 : OK
+EX_28 : OK
+EX_29 : OK
+EX_30 : OK
+EX_31 : OK
+EX_32 : KO | [('a', 6), ('z', 4), ('b', 4)] instead of: [('a', 6), ('b', 4), ('z', 4)]
+EX_33 : OK
+EX_34 : OK
+EX_35 : OK
+EX_36 : OK
+EX_37 : KO | 1969-12-31 23:59:59 instead of: 0
+EX_38 : OK
+EX_39 : OK
+EX_40 : OK
+
+SCORE:
+80 / 100
+===== ===== ===== ===== ===== ===== ===== ===== =====
